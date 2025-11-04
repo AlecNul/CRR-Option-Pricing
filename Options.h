@@ -4,6 +4,10 @@
 
 using namespace std;
 
+// Variables
+enum class optionType {Call, Put};
+class BlackScholesPricer;
+
 class Option
 {
 // Attributes
@@ -24,7 +28,7 @@ public:
 
 // Methods
     virtual double payoff(double z) const = 0;
-    virtual double payoff() = 0;
+    // virtual double payoff() = 0; Not sure to understand if we have to do this ?
 
 // Destructor
     virtual ~Option() {}
@@ -37,10 +41,9 @@ class EuropeanVanillaOption : public Option
 // Attributes
 protected:
     double strike;
-    enum class optionType {call, put};
-    optionType type;
 
 // Getter
+public:
     double getStrike() const {return strike;}
     virtual optionType getOptionType() const = 0;
 
@@ -54,45 +57,54 @@ public:
 // Methods
 
 // Destructor
-    virtual ~EuropeanVanillaOption() {}
+    virtual ~EuropeanVanillaOption() override {}
+
+// Friend with BlackScholes
+    friend class BlackScholesPricer;
 };
 
 //////////////////////////////////////////////////////////
 
 class CallOption : public EuropeanVanillaOption
 {
-
+public: 
 // Getter
-    optionType getOptionType() const override {optionType::call;}
+    optionType getOptionType() const override {return optionType::Call;}
 
 // Constructor
     CallOption(double exp, double K) : EuropeanVanillaOption(exp, K) {}
 
 // Methods
-    double payoff(double z) 
+    double payoff(double z) const override
     {
         double res = 0;
         if (z > strike) {res = z-strike;}
         return res;
     }
 
+// Destructor
+    virtual ~CallOption() override {}
 };
 
-class PutOption : EuropeanVanillaOption
-{
+///////////////////////////////////////////////////////////
 
+class PutOption : public EuropeanVanillaOption
+{
+public:
 // Getter
-    optionType getOptionType() const override {optionType::call;}
+    optionType getOptionType() const override {return optionType::Put;}
 
 // Constructor
     PutOption(double exp, double K) : EuropeanVanillaOption(exp, K) {}
 
 // Methods
-    double payoff(double z) 
+    double payoff(double z) const override
     {
         double res = 0;
-        if (z > strike) {res = strike-z;}
+        if (strike > z) {res = strike-z;}
         return res;
     }
 
+// Destructor
+virtual ~PutOption() override {}
 };
