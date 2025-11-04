@@ -1,0 +1,5 @@
+# Fichiers compilés et build
+*.o
+*.exe
+*.out
+build/
