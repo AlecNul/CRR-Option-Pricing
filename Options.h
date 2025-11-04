@@ -2,11 +2,11 @@
 #include <iostream>
 #include "Exceptions.h"
 
-using namespace std;
-
 // Variables
-enum class optionType {Call, Put};
+enum class OptionType {Call, Put};
 class BlackScholesPricer;
+
+/////////////////////////////////////////////////////////
 
 class Option
 {
@@ -45,7 +45,7 @@ protected:
 // Getter
 public:
     double getStrike() const {return strike;}
-    virtual optionType getOptionType() const = 0;
+    virtual OptionType getOptionType() const = 0;
 
 // Constructor
 public:
@@ -69,7 +69,7 @@ class CallOption : public EuropeanVanillaOption
 {
 public: 
 // Getter
-    optionType getOptionType() const override {return optionType::Call;}
+    OptionType getOptionType() const override {return OptionType::Call;}
 
 // Constructor
     CallOption(double exp, double K) : EuropeanVanillaOption(exp, K) {}
@@ -92,7 +92,7 @@ class PutOption : public EuropeanVanillaOption
 {
 public:
 // Getter
-    optionType getOptionType() const override {return optionType::Put;}
+    OptionType getOptionType() const override {return OptionType::Put;}
 
 // Constructor
     PutOption(double exp, double K) : EuropeanVanillaOption(exp, K) {}
