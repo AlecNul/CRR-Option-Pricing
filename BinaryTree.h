@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <vector>
 
@@ -12,7 +13,10 @@ private:
 public:
     void setDepth(int N)
     {
+        // When testing in the main, I remarked that you resized with smaller values, so the ones you put before were erased.
+        if (N<depth) { cout << "Warning you may be erasing some values, the current depth ("<<depth<<") is higher." << endl; }
         tree.resize(N+1);
+        depth = N;
         for (int i=0;i<N+1;i++) { tree[i].resize(i+1,T()); }
     }
 
@@ -20,7 +24,8 @@ public:
 
     T getNode(int n, int i) const { return tree.at(n).at(i); }
 
-// Constructor
+// Constructors
+    BinaryTree() : depth(0) {}
     BinaryTree(int N, std::vector<std::vector<T>> t) : depth(N), tree(t) {}
 
 // Methods
@@ -34,7 +39,8 @@ public:
             }
             cout << endl;
         }
+        cout << endl;
     }
-    // better display() To Do
+    // better display() To Do maybe
 
 };
